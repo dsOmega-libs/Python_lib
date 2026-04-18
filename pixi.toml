@@ -12,12 +12,14 @@ platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
 # are recognized as global).
 postinstall = "pip install --no-build-isolation --no-deps --disable-pip-version-check --break-system-packages -e ."
 build = "echo test"
+start = "python -m hello_world.main"
 
 [dependencies]
 python = ">=3.14"
 pandas = ">=3.0.1,<4"
 numpy = ">=2.4.3,<3"
 tqdm = ">=4.67.3,<5"
+pyzotero = ">=1.11.0,<2"
 
 [pypi-dependencies]
 matplotlib = ">=3.10.8, <4"
@@ -48,6 +50,17 @@ isort = "==5.13.2"
 tasks = { pre-commit-check = "pre-commit run --all-files" }
 pypi-dependencies = { Python_lib = { path = "./", editable = true }, pre-commit = "==3.7.0" }
 
+[feature.docs.tasks]
+html = "make html"
+
+[feature.docs.dependencies]
+sphinx = "9.1.0"
+
+[feature.docs.pypi-dependencies]
+Python_lib = { path = "./", editable = true }
+
+
 [environments]
 default = []
 dev = ["test", "lint", "pre-commit"]
+docs = { features = ["docs"], no-default-feature = true }
