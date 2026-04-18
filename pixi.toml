@@ -18,8 +18,7 @@ start = "python -m hello_world.main"
 python = ">=3.14"
 pandas = ">=3.0.1,<4"
 numpy = ">=2.4.3,<3"
-tqdm = ">=4.67.3,<5"
-pyzotero = ">=1.11.0,<2"
+# pyzotero = ">=1.11.0,<2"
 
 [pypi-dependencies]
 matplotlib = ">=3.10.8, <4"
@@ -59,8 +58,56 @@ sphinx = "==9.1.0"
 [feature.docs.pypi-dependencies]
 Python_lib = { path = "./", editable = true }
 
+# --- Packages. ---
+# # Common package.
+[feature.common.dependencies]
+tqdm = ">=4.67.3,<5"
+
+[feature.common.pypi-dependencies]
+common = { path = "./packages/common", editable = true }
+
+[feature.common.activation.env]
+PACKAGE_DIR = "packages/common"
+
+[feature.common.tasks]
+# QUESTION: cwd seems not needed.
+hello-world = { cmd = "python -m hello_world.main" }
+
+[feature.dsomega-logging.dependencies]
+tqdm = ">=4.67.3,<5"
+rich = ">=14.3.4,<15"
+
+[feature.dsomega-logging.pypi-dependencies]
+dsomega-logging = { path = "./packages/dsomega_logging", editable = true }
+
+[feature.dsomega-logging.activation.env]
+PACKAGE_DIR = "packages/dsomega-logging"
+
+[feature.dsomega-logging.tasks]
+log = { cmd = "python -m dsomega_logging.main" }
+
 
 [environments]
 default = []
 dev = ["test", "lint", "pre-commit"]
 docs = { features = ["docs"], no-default-feature = true }
+
+common = { features = [
+    "common",
+], solve-group = "common" }
+common-dev = { features = [
+    "common",
+    "test",
+    "lint",
+    "pre-commit",
+], solve-group = "common" }
+
+dsomega-logging = { features = [
+    "dsomega-logging",
+], solve-group = "dsomega-logging" }
+dsomega-logging-dev = { features = [
+    "dsomega-logging",
+    "test",
+    "lint",
+    "pre-commit",
+], solve-group = "dsomega-logging" }
